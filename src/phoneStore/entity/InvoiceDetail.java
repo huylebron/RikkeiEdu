@@ -1,49 +1,73 @@
 package phoneStore.entity;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 public class InvoiceDetail {
-    private int invoiceDetailId;
-    private int invoiceId;
-    private int productId;
-    private int quantity;
-    private double unitPrice;
+
+    private Long id;
+    private Product product;
+    private Integer quantity;
+    private BigDecimal unitPrice;
 
     public InvoiceDetail() {}
 
-    public InvoiceDetail(int id, int invoiceId, int productId, int quantity, double unitPrice) {
-        this.invoiceDetailId = id;
-        this.invoiceId = invoiceId;
-        this.productId = productId;
+    public InvoiceDetail(Long id, Product product, Integer quantity, BigDecimal unitPrice) {
+        this.id = id;
+        this.product = product;
         this.quantity = quantity;
         this.unitPrice = unitPrice;
     }
 
-    // Getter và Setter
-    public int getId() { return invoiceDetailId; }
-    public void setId(int id) { this.invoiceDetailId = id; }
 
-    public int getInvoiceId() { return invoiceId; }
-    public void setInvoiceId(int invoiceId) { this.invoiceId = invoiceId; }
 
-    public int getProductId() { return productId; }
-    public void setProductId(int productId) { this.productId = productId; }
+    public Long getId() {
+        return id;
+    }
 
-    public int getQuantity() { return quantity; }
-    public void setQuantity(int quantity) { this.quantity = quantity; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public double getUnitPrice() { return unitPrice; }
-    public void setUnitPrice(double unitPrice) { this.unitPrice = unitPrice; }
+    public Product getProduct() {
+        return product;
+    }
 
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public BigDecimal getUnitPrice() {
+        return unitPrice;
+    }
+
+    public void setUnitPrice(BigDecimal unitPrice) {
+        this.unitPrice = unitPrice;
+    }
+
+    public BigDecimal getLineTotal() {
+        return unitPrice.multiply(BigDecimal.valueOf(quantity));
+    }
+
+    // ===== equals/hashCode =====
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof InvoiceDetail that)) return false;
-        return invoiceDetailId == that.invoiceDetailId;
+        if (this == o) return true;
+        if (!(o instanceof InvoiceDetail)) return false;
+        InvoiceDetail that = (InvoiceDetail) o;
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(invoiceDetailId);
+        return Objects.hash(id);
     }
-
 }

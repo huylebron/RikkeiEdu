@@ -1,67 +1,88 @@
 package phoneStore.entity;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Invoice {
 
-    private int invoiceId;
-    private int customerId;
-    private Timestamp invoiceDate;
-    private double totalAmount;
+    private Long id;
+    private Customer customer;
+    private LocalDateTime createdAt;
+    private BigDecimal totalAmount;
 
-    public Invoice() {
-    }
+    private List<InvoiceDetail> details = new ArrayList<>();
 
+    public Invoice() {}
 
-    public Invoice(int id, int customerId, Timestamp invoiceDate, double totalAmount) {
-        this.invoiceId = id;
-        this.customerId = customerId;
-        this.invoiceDate = invoiceDate;
+    public Invoice(Long id, Customer customer, LocalDateTime createdAt, BigDecimal totalAmount) {
+        this.id = id;
+        this.customer = customer;
+        this.createdAt = createdAt;
         this.totalAmount = totalAmount;
     }
 
-    public int getCustomerId() {
-        return customerId;
+    // ===== Getter / Setter =====
+
+    public Long getId() {
+        return id;
     }
 
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public int getInvoiceId() {
-        return invoiceId;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setInvoiceId(int invoiceId) {
-        this.invoiceId = invoiceId;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
-    public Timestamp getInvoiceDate() {
-        return invoiceDate;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setInvoiceDate(Timestamp invoiceDate) {
-        this.invoiceDate = invoiceDate;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public double getTotalAmount() {
+    public BigDecimal getTotalAmount() {
         return totalAmount;
     }
 
-    public void setTotalAmount(double totalAmount) {
+    public void setTotalAmount(BigDecimal totalAmount) {
         this.totalAmount = totalAmount;
     }
 
+    public List<InvoiceDetail> getDetails() {
+        return details;
+    }
+
+    public void setDetails(List<InvoiceDetail> details) {
+        this.details = details;
+    }
+
+    public void addDetail(InvoiceDetail detail) {
+        this.details.add(detail);
+    }
+
+    // ===== equals/hashCode =====
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Invoice invoice)) return false;
-        return invoiceId == invoice.invoiceId;
+        if (this == o) return true;
+        if (!(o instanceof Invoice)) return false;
+        Invoice invoice = (Invoice) o;
+        return Objects.equals(id, invoice.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(invoiceId);
+        return Objects.hash(id);
     }
 
 }

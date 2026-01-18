@@ -39,14 +39,6 @@ public class Admin {
         this.username = username;
     }
 
-    @Override
-    public String toString() {
-        return "Admin{" +
-                "adminId=" + adminId +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                '}';
-    }
 
     @Override
     public boolean equals(Object o) {

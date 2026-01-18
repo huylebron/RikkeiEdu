@@ -1,25 +1,20 @@
 package phoneStore.entity;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 public class Product {
 
 
-    private int id;
+    private Long id;
     private String name;
     private String brand;
-    private double price;
-    private int stock;
+    private BigDecimal price;
+    private Integer stock;
 
-    public Product(String name, String brand, double price, int stock) {
-        this.name = name;
-        this.brand = brand;
-        this.price = price;
-        this.stock = stock;
-    }
+    public Product() {}
 
-
-    public Product(int id, String name, String brand, double price, int stock) {
+    public Product(Long id, String name, String brand, BigDecimal price, Integer stock) {
         this.id = id;
         this.name = name;
         this.brand = brand;
@@ -27,19 +22,13 @@ public class Product {
         this.stock = stock;
     }
 
-    public String getBrand() {
-        return brand;
-    }
+    // ===== Getter / Setter =====
 
-    public void setBrand(String brand) {
-        this.brand = brand;
-    }
-
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -51,29 +40,33 @@ public class Product {
         this.name = name;
     }
 
-    public double getPrice() {
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
-    public int getStock() {
+    public Integer getStock() {
         return stock;
     }
 
-    public void setStock(int stock) {
+    public void setStock(Integer stock) {
         this.stock = stock;
     }
 
+    // ===== equals/hashCode theo id =====
+
     @Override
-    public String toString() {
-        return String.format("| %-5d | %-20s | %-10s | %-12.2f | %-7d |",
-                id, name, brand, price, stock);
-    }
-
-
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Product)) return false;
@@ -84,5 +77,17 @@ public class Product {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    // ===== Debug =====
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", brand='" + brand + '\'' +
+                ", price=" + price +
+                ", stock=" + stock +
+                '}';
     }
 }
