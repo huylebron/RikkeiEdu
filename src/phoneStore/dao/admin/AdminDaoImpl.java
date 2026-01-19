@@ -4,10 +4,8 @@ import phoneStore.database.DBConnection;
 import phoneStore.entity.Admin;
 import phoneStore.exception.DatabaseException;
 
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Types;
+import java.sql.*;
+import java.util.Optional;
 
 public class AdminDaoImpl implements IAdminDao{
     /**
@@ -57,6 +55,34 @@ public class AdminDaoImpl implements IAdminDao{
         }
 
 
+
+    }
+
+    /**
+     * @param username
+     * @return
+     */
+    @Override
+    public Optional<Admin> findByUsername(String username) {
+
+        String sql = "SELECT * FROM fn_admin_find_by_username(?)";
+        try (Connection conn = DBConnection.getConnection();
+             CallableStatement cs = conn.prepareCall(sql)) {
+
+            cs.setString(1, username);
+            try (ResultSet rs = cs.executeQuery()) {
+                if (rs.next()) {
+                    Admin a = new Admin();
+                    a.setAdminId(rs.getLong("id"));
+                    a.setUsername(rs.getString("username"));
+                    a.setPassword(rs.getString("password"));
+                    return Optional.of(a);
+                }
+            }
+            return Optional.empty();
+        } catch (SQLException e) {
+            throw new DatabaseException("Lỗi khi gọi fn_admin_find_by_username", e);
+        }
 
     }
 }

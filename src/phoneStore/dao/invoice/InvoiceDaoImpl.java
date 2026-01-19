@@ -68,7 +68,7 @@ public class InvoiceDaoImpl  implements IInvoiceDao{
      * @return
      */
     @Override
-    public List<Invoice> findAllINvoiceDao() {
+    public List<Invoice> findAllIvoiceDao() {
         String sql = "SELECT * FROM fn_invoice_list()";
         try (Connection conn = DBConnection.getConnection();
              CallableStatement cs = conn.prepareCall(sql);
@@ -111,7 +111,7 @@ public class InvoiceDaoImpl  implements IInvoiceDao{
      */
     @Override
     public Optional<Invoice> findByIdDetail(Long invoiceId) {
-        Invoice invoice = findAllINvoiceDao().stream()
+        Invoice invoice = findAllIvoiceDao().stream()
                 .filter(invoice1 -> invoice1.getId() != null && invoice1.getId() == invoiceId)
                 .findFirst()
                 .orElse(null);

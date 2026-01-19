@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface IInvoiceDao {
 
     Invoice createInvoiceDao(Invoice invoice);
-    List<Invoice> findAllINvoiceDao();
+    List<Invoice> findAllIvoiceDao();
     Optional<Invoice> findByIdDetail( Long invoiceId) ;
 // search invoice
     List<Invoice> searchByCustomerAndDay(String customerKeyword, LocalDate day);
