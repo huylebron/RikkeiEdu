@@ -4,14 +4,14 @@ import java.util.Objects;
 
 public class Customer {
 
-    private Integer id;
+    private Long id;
     private String name;
     private String phone;    // nullable
     private String email;    // unique, nullable
     private String address;
 
 
-    public Customer(Integer id, String name, String phone, String email, String address) {
+    public Customer(Long id, String name, String phone, String email, String address) {
         this.id = id;
         this.name = name;
         this.phone = phone;
@@ -30,11 +30,11 @@ public class Customer {
         this.address = address;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
