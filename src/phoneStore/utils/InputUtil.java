@@ -23,7 +23,7 @@ public final class InputUtil {
         return s == null ? "" : s.trim();
     }
 
-    public static String readNull(String prompt) {
+    public static String readNotNull(String prompt) {
         while (true) {
             String s = readString(prompt);
             if (!s.isEmpty()) return s;
@@ -48,7 +48,7 @@ public final class InputUtil {
         while (true) {
             int v = readInt(prompt);
             if (v >= minRange && v <= maxRange) return v;
-            System.out.printf(" Vui long nhap trong khoang [%d..%d].%n", minRange, maxRange);
+            System.out.printf(" Vui long nhap trong khoang [%d - %d].%n", minRange, maxRange);
         }
 
     }

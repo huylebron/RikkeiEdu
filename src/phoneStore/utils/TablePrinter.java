@@ -73,7 +73,7 @@ public class TablePrinter {
         System.out.println(sb.toString());
     }
 
-    private static String safe(String s) {
+    public static String safe(String s) {
         return s == null ? "" : s;
     }
 
@@ -94,5 +94,5 @@ public class TablePrinter {
         return v.setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString();
     }
 
-    public static final DateTimeFormatter DATETIME_FMT = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+    public static final DateTimeFormatter DATETIME_FMT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 }
