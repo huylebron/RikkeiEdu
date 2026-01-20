@@ -88,7 +88,7 @@ public class TablePrinter {
         return sb.toString();
     }
 
-    // ===== Helpers format commonly used types =====
+    // method helper cho format tiền 
     public static String fmtMoney(BigDecimal v) {
         if (v == null) return "0";
         return v.setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString();
