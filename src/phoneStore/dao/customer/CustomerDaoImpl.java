@@ -47,7 +47,7 @@ public class CustomerDaoImpl implements ICustomerDao {
      */
     @Override
     public void updateCustomerDao(Customer customer) {
-        String sql = "call sp_customer_update(?, ?, ?, ?, ?)";
+        String sql = "CALL sp_customer_update(?,?,?,?,?)";
         try (Connection connection = DBConnection.getConnection();
              CallableStatement statement = connection.prepareCall(sql)) {
 

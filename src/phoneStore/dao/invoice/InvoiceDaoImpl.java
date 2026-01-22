@@ -69,7 +69,7 @@ public class InvoiceDaoImpl  implements IInvoiceDao{
      */
     @Override
     public List<Invoice> findAllIvoiceDao() {
-        String sql = "SELECT * FROM fn_invoice_list()";
+        String sql = "SELECT * FROM fn_invoice_list_summary()";
         try (Connection conn = DBConnection.getConnection();
              CallableStatement cs = conn.prepareCall(sql);
              ResultSet rs = cs.executeQuery()) {
@@ -80,7 +80,7 @@ public class InvoiceDaoImpl  implements IInvoiceDao{
             }
             return list;
         } catch (SQLException e) {
-            throw new DatabaseException("Lỗi khi gọi fn_invoice_list_summary", e);
+            throw new DatabaseException("Lỗi khi gọi fn_invoice_list", e);
         }
 
     }
@@ -253,7 +253,7 @@ public class InvoiceDaoImpl  implements IInvoiceDao{
      */
     @Override
     public BigDecimal getRevenueByDay(LocalDate day) {
-        String sql = "? = call fn_revenue_by_day(?)";
+        String sql = "select * from fn_revenue_by_day(?)";
         try (Connection conn = DBConnection.getConnection();
              CallableStatement cs = conn.prepareCall(sql)) {
 

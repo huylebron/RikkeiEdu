@@ -2,10 +2,13 @@ package phoneStore.app;
 
 import phoneStore.constant.MenuConstant;
 import phoneStore.dao.customer.CustomerDaoImpl;
+import phoneStore.dao.invoice.InvoiceDaoImpl;
 import phoneStore.dao.product.ProductDaoImpl;
 import phoneStore.exception.ConsoleErrorHandler;
 import phoneStore.services.customer.CustomerServiceImpl;
 import phoneStore.services.customer.ICustomerService;
+import phoneStore.services.invoice.IInvoiceService;
+import phoneStore.services.invoice.InvoiceServiceImpl;
 import phoneStore.services.product.IProductService;
 import phoneStore.services.product.ProductServiceImpl;
 import phoneStore.utils.InputUtil;
@@ -14,14 +17,18 @@ public class Menu {
 
     private final ProductMenuHandler productHandler;
     private final CustomerMenuHandler customerHandler;
+    private final InvoiceMenuHandler invoiceHandler;
 
+    public Menu() {
+        IProductService productService = new ProductServiceImpl(new ProductDaoImpl());
+        ICustomerService customerService = new CustomerServiceImpl(new CustomerDaoImpl());
+        IInvoiceService invoiceService = new InvoiceServiceImpl(new InvoiceDaoImpl());
 
- public Menu() {
-     IProductService productService = new ProductServiceImpl(new ProductDaoImpl()) ;
-     ICustomerService customerService = new CustomerServiceImpl(new CustomerDaoImpl()) ;
-     this.productHandler = new ProductMenuHandler(productService);
-     this.customerHandler = new CustomerMenuHandler(customerService);
- }
+        this.productHandler = new ProductMenuHandler(productService);
+        this.customerHandler = new CustomerMenuHandler(customerService);
+        this.invoiceHandler = new InvoiceMenuHandler(invoiceService, customerService, productService);
+    }
+
 
     public void mainMenu() {
         while (true) {
@@ -37,7 +44,8 @@ public class Menu {
                         customerHandler.run();
                         break;
                     case 3:
-                       invoiceMenuHandler.run();
+                        invoiceHandler.run();
+
                         break;
                     case 0:
                         System.out.println("Thoat chuong trinh.");

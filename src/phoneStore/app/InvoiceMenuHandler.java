@@ -20,13 +20,13 @@ import java.util.stream.Collectors;
 
 import static phoneStore.utils.TablePrinter.safe;
 
-public class invoiceMenuHandler {
+public class InvoiceMenuHandler {
 
     private final IInvoiceService invoiceService;
     private final ICustomerService customerService;
     private final IProductService productService;
 
-    public invoiceMenuHandler(IInvoiceService invoiceService, ICustomerService customerService, IProductService productService) {
+    public InvoiceMenuHandler(IInvoiceService invoiceService, ICustomerService customerService, IProductService productService) {
         this.invoiceService = invoiceService;
         this.customerService = customerService;
         this.productService = productService;
@@ -34,7 +34,7 @@ public class invoiceMenuHandler {
 
     // ham hien thi menu invoice
 
-    public void run() {
+    public void run(){
 
         while (true) {
 
