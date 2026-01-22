@@ -15,7 +15,7 @@ public class AdminDaoImpl implements IAdminDao{
     @Override
     public Admin insertAdminDao(Admin admin) {
 
-        String sql = "{ call sp_admin_insert(?, ?, ?) }";
+        String sql = "call sp_admin_insert(?, ?, ?)";
         try (Connection conn = DBConnection.getConnection();
              CallableStatement cs = conn.prepareCall(sql)) {
 
@@ -42,7 +42,7 @@ public class AdminDaoImpl implements IAdminDao{
     @Override
     public void updatePassword(Long id, String newPasswordHash) {
 
-        String sql = "{ call sp_admin_update_password(?, ?) }";
+        String sql = "call sp_admin_update_password(?, ?)";
         try (Connection conn = DBConnection.getConnection();
              CallableStatement cs = conn.prepareCall(sql)) {
 

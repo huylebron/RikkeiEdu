@@ -88,10 +88,11 @@ public class TablePrinter {
         return sb.toString();
     }
 
-    // ===== Helpers format commonly used types =====
+    // helper method format money
     public static String fmtMoney(BigDecimal v) {
         if (v == null) return "0";
-        return v.setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString();
+        return String.format("%,.0f", v.doubleValue()).replace(",", ".");
+        //return v.setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString();
     }
 
     public static final DateTimeFormatter DATETIME_FMT = DateTimeFormatter.ofPattern("dd/MM/yyyy");

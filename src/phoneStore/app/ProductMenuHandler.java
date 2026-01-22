@@ -2,7 +2,9 @@ package phoneStore.app;
 
 import phoneStore.constant.MenuConstant;
 import phoneStore.entity.Product;
+import phoneStore.exception.BusinessException;
 import phoneStore.exception.ConsoleErrorHandler;
+import phoneStore.exception.NotFoundException;
 import phoneStore.services.product.IProductService;
 import phoneStore.utils.InputUtil;
 import phoneStore.utils.TablePrinter;
@@ -123,9 +125,31 @@ public class ProductMenuHandler {
 
     private void deleteProduct() {
 
-        long id = InputUtil.readLong("nhập id sản phẩm cần xóa  ");
-        productService.deleteProductService(id);
-        System.out.println("  xóa thàng công .");
+        try {
+            long id = InputUtil.readLong("Nhập ID điện thoại cần xóa: ");
+            // Kiểm tra sản phẩm có tồn tại không
+            Product product = productService.getByIdProductService(id);
+
+            // Hiển thị thông tin sản phẩm
+            System.out.println("\nTHÔNG TIN ĐIỆN THOẠI CẦN XÓA:");
+            printProducts("", List.of(product));
+
+            // Xác nhận xóa
+            String confirm = InputUtil.readString("\nBạn có chắc chắn muốn xóa? (y/n): ");
+            if (!"y".equalsIgnoreCase(confirm.trim())) {
+                System.out.println("Đã hủy thao tác xóa.");
+                return;
+            }
+
+            // Thực hiện xóa
+            productService.deleteProductService(id);
+            System.out.println("Đã xóa điện thoại thành công! ID: " + id);
+
+
+        } catch (BusinessException e) {
+            System.out.println("Lỗi nghiệp vụ delele product " + e.getMessage());
+
+        }
     }
 
     private void updateProduct() {
@@ -144,7 +168,8 @@ public class ProductMenuHandler {
         productService.updateProductService(p);
 
 
-        System.out.println("cập nhật thành công ");
+        System.out.println("cập nhật thành công ! sản phẩm mới :  " + p);
+
 
     }
 

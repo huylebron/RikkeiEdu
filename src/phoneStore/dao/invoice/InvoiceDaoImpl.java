@@ -27,7 +27,7 @@ public class InvoiceDaoImpl  implements IInvoiceDao{
             throw new IllegalArgumentException(" invoice phải có customer và id đúng ") ;
 
         }
-        String sql = "{ call sp_invoice_create(?, ?, ?, ?, ?) }";
+        String sql = "call sp_invoice_create(?, ?, ?, ?, ?)";
 
         List<InvoiceDetail> details = invoice.getDetails() ;
         Long[] productIds = details.stream()
@@ -253,7 +253,7 @@ public class InvoiceDaoImpl  implements IInvoiceDao{
      */
     @Override
     public BigDecimal getRevenueByDay(LocalDate day) {
-        String sql = "{ ? = call fn_revenue_by_day(?) }";
+        String sql = "? = call fn_revenue_by_day(?)";
         try (Connection conn = DBConnection.getConnection();
              CallableStatement cs = conn.prepareCall(sql)) {
 
@@ -278,7 +278,7 @@ public class InvoiceDaoImpl  implements IInvoiceDao{
      */
     @Override
     public BigDecimal getRevenueByMonth(int year, int month) {
-        String sql = "{ ? = call fn_revenue_by_month(?, ?) }";
+        String sql = "? = call fn_revenue_by_month(?, ?)";
         try (Connection conn = DBConnection.getConnection();
              CallableStatement cs = conn.prepareCall(sql)) {
 
@@ -303,7 +303,7 @@ public class InvoiceDaoImpl  implements IInvoiceDao{
      */
     @Override
     public BigDecimal getRevenueByYear(int year) {
-        String sql = "{ ? = call fn_revenue_by_year(?) }";
+        String sql = "? = call fn_revenue_by_year(?)";
         try (Connection conn = DBConnection.getConnection();
              CallableStatement cs = conn.prepareCall(sql)) {
 

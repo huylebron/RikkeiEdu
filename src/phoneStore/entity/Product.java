@@ -82,12 +82,12 @@ public class Product {
     // ===== Debug =====
     @Override
     public String toString() {
-        return "Product{" +
+        return
                 "id=" + id +
-                ", name='" + name + '\'' +
-                ", brand='" + brand + '\'' +
-                ", price=" + price +
-                ", stock=" + stock +
-                '}';
+                ", tên ='" + name + '\'' +
+                ",  nhãn hiệu ='" + brand + '\'' +
+                ", giá =" + price +
+                ", tồn kho =" + stock
+                ;
     }
 }

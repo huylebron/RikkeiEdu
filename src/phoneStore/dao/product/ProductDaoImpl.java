@@ -19,7 +19,7 @@ public class ProductDaoImpl implements IProductDao {
      */
     @Override
     public Product insertProductDao(Product product) {
-        String sql = "{ call sp_product_insert(?, ?, ?, ?, ?) }";
+        String sql = "call sp_product_insert(?, ?, ?, ?, ?)";
         try (Connection conn = DBConnection.getConnection();
              CallableStatement cs = conn.prepareCall(sql)) {
 
@@ -45,7 +45,7 @@ public class ProductDaoImpl implements IProductDao {
      */
     @Override
     public void updateProductDao(Product product) {
-        String sql = "{ call sp_product_update(?, ?, ?, ?, ?) }";
+        String sql = "CALL sp_product_update(?, ?, ?, ?, ?)";
         try (Connection conn = DBConnection.getConnection();
              CallableStatement cs = conn.prepareCall(sql)) {
 
@@ -68,7 +68,7 @@ public class ProductDaoImpl implements IProductDao {
      */
     @Override
     public void deleteProductDao(long id) {
-        String sql = "{ call sp_product_delete(?) }";
+        String sql = "call sp_product_delete(?)";
         try (Connection conn = DBConnection.getConnection();
              CallableStatement cs = conn.prepareCall(sql)) {
 

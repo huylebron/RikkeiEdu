@@ -22,15 +22,16 @@ public class Main {
             try {
                 System.out.println("\n --- Đăng nhập ---") ;
                 String username = InputUtil.readNotNull("tên đăng nhập : ")  ;
-                String password  = InputUtil.readNotNull(" mật khẩu") ;
+                String password  = InputUtil.readNotNull(" mật khẩu : ") ;
 
                 authService.loginService(username , password) ;
                 System.out.println(" dăng nhập thành công ");
                 menu.mainMenu(); // vào menu chính
                 break;
             } catch (Exception e ) {
-                ConsoleErrorHandler.handle(e);
+
                 System.err.println("vui lòng thử lại ");
+                ConsoleErrorHandler.handle(e);
             }
         }
     }

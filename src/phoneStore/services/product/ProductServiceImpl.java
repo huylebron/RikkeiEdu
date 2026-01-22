@@ -6,6 +6,7 @@ import phoneStore.exception.BusinessException;
 import phoneStore.exception.DatabaseException;
 import phoneStore.exception.NotFoundException;
 import phoneStore.exception.ValidationException;
+import phoneStore.utils.InputUtil;
 import phoneStore.utils.Validator;
 
 import java.math.BigDecimal;
@@ -60,13 +61,16 @@ public class ProductServiceImpl implements IProductService{
     public void deleteProductService(long id) {
         // get id
 
-        getByIdProductService(id) ;
         try {
+            // Kiểm tra sản phẩm tồn tại
+            Product product = getByIdProductService(id);
+            // Thực hiện xóa
             productDao.deleteProductDao(id);
-
         } catch (DatabaseException e) {
-            throw new BusinessException(" ko thể xóa sản phẩm do đã phát sinh hóa đơn ") ;
+            throw new BusinessException("Không thể xóa điện thoại do đã phát sinh hóa đơn");
         }
+
+
 
 
     }

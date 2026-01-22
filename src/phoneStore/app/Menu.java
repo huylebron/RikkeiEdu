@@ -37,7 +37,7 @@ public class Menu {
                         customerHandler.run();
                         break;
                     case 3:
-                      //  invoiceHandler.run();
+                       invoiceMenuHandler.run();
                         break;
                     case 0:
                         System.out.println("Thoat chuong trinh.");

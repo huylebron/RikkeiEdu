@@ -25,4 +25,6 @@ public interface IInvoiceService {
     BigDecimal revenueByMonthInvoiceService(int year, int month);
 
     BigDecimal revenueByYearInvoiceService(int year);
+
+
 }

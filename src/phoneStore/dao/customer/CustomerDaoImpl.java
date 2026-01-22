@@ -17,7 +17,7 @@ public class CustomerDaoImpl implements ICustomerDao {
      */
     @Override
     public Customer insertCustomerDao(Customer customer) {
-        String sql = "{ call sp_customer_insert(?, ?, ?, ?, ?) }" ;
+        String sql = "call sp_customer_insert(?, ?, ?, ?, ?)" ;
         try(Connection connection = DBConnection.getConnection();
             CallableStatement statement = connection.prepareCall(sql)) {
 
@@ -47,7 +47,7 @@ public class CustomerDaoImpl implements ICustomerDao {
      */
     @Override
     public void updateCustomerDao(Customer customer) {
-        String sql = "{ call sp_customer_update(?, ?, ?, ?, ?) }";
+        String sql = "call sp_customer_update(?, ?, ?, ?, ?)";
         try (Connection connection = DBConnection.getConnection();
              CallableStatement statement = connection.prepareCall(sql)) {
 
@@ -72,7 +72,7 @@ public class CustomerDaoImpl implements ICustomerDao {
      */
     @Override
     public void deleteCustomerDao(long id) {
-        String sql = "{ call sp_customer_delete(?) }";
+        String sql = "call sp_customer_delete(?)";
         try (Connection connection = DBConnection.getConnection();
              CallableStatement statement = connection.prepareCall(sql)) {
 
