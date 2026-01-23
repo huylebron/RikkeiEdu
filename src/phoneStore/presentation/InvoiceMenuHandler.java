@@ -1,4 +1,4 @@
-package phoneStore.app;
+package phoneStore.presentation;
 
 import phoneStore.constant.MenuConstant;
 import phoneStore.entity.Customer;
@@ -26,7 +26,8 @@ public class InvoiceMenuHandler {
     private final ICustomerService customerService;
     private final IProductService productService;
 
-    public InvoiceMenuHandler(IInvoiceService invoiceService, ICustomerService customerService, IProductService productService) {
+    public InvoiceMenuHandler(IInvoiceService invoiceService, ICustomerService customerService,
+            IProductService productService) {
         this.invoiceService = invoiceService;
         this.customerService = customerService;
         this.productService = productService;
@@ -34,10 +35,9 @@ public class InvoiceMenuHandler {
 
     // ham hien thi menu invoice
 
-    public void run(){
+    public void run() {
 
         while (true) {
-
 
             try {
                 System.out.println(MenuConstant.INVOICE_MENU);
@@ -45,7 +45,7 @@ public class InvoiceMenuHandler {
 
                 switch (choice) {
                     case 1:
-                        createInvoice();
+                        InputUtil.executeWithCancel(this::createInvoice);
                         break;
                     case 2:
                         listInvoice();
@@ -62,7 +62,6 @@ public class InvoiceMenuHandler {
                     default:
                         break;
 
-
                 }
             } catch (Exception e) {
                 ConsoleErrorHandler.handle(e);
@@ -71,8 +70,7 @@ public class InvoiceMenuHandler {
 
     }
 
-
-    //revenue
+    // revenue
 
     private void revenueMenu() {
 
@@ -83,13 +81,13 @@ public class InvoiceMenuHandler {
 
                 switch (choice) {
                     case 1:
-                        revenueByDay();
+                       InputUtil.executeWithCancel(this::revenueByDay);
                         break;
                     case 2:
-                        revenueByMonth();
+                        InputUtil.executeWithCancel(this::revenueByMonth);
                         break;
                     case 3:
-                        revenueByYear();
+                        InputUtil.executeWithCancel(this::revenueByYear);
                         break;
                     case 0:
                         return;
@@ -100,7 +98,6 @@ public class InvoiceMenuHandler {
                 ConsoleErrorHandler.handle(e);
             }
         }
-
 
     }
 
@@ -126,7 +123,6 @@ public class InvoiceMenuHandler {
         BigDecimal v = invoiceService.revenueByDayInvoiceService(day);
         System.out.println("Doanh thu ngày  " + day + "  là  : " + TablePrinter.fmtMoney(v));
 
-
     }
 
     // seach invoice optional
@@ -139,13 +135,13 @@ public class InvoiceMenuHandler {
 
                 switch (choice) {
                     case 1:
-                        searchInvoiceByDay();
+                        InputUtil.executeWithCancel(this::searchInvoiceByDay);
                         break;
                     case 2:
-                        searchInvoiceByMonth();
+                        InputUtil.executeWithCancel(this::searchInvoiceByMonth);
                         break;
                     case 3:
-                        searchInvoiceByYear();
+                        InputUtil.executeWithCancel(this::searchInvoiceByYear);
                         break;
                     case 0:
                         return;
@@ -157,7 +153,6 @@ public class InvoiceMenuHandler {
             }
         }
 
-
     }
 
     private void searchInvoiceByYear() {
@@ -168,10 +163,9 @@ public class InvoiceMenuHandler {
         printInvoiceSearchResult(list);
         showInvoiceDetails();
 
-
     }
 
-// search invoice by month
+    // search invoice by month
 
     private void searchInvoiceByMonth() {
 
@@ -183,10 +177,9 @@ public class InvoiceMenuHandler {
         printInvoiceSearchResult(list);
         showInvoiceDetails();
 
-
     }
 
-// search invoive by day
+    // search invoive by day
 
     private void searchInvoiceByDay() {
 
@@ -200,7 +193,8 @@ public class InvoiceMenuHandler {
 
     private void showInvoiceDetails() {
         long id = InputUtil.readLong(" nhập id hóa đơn để xem chi tiết ( nhập 0 để bỏ qua )  :  ");
-        if (id == 0) return;
+        if (id == 0)
+            return;
 
         Invoice full = invoiceService.getDetailsInvoiceService(id);
         printInvoice(full);
@@ -210,15 +204,14 @@ public class InvoiceMenuHandler {
     private void printInvoiceSearchResult(List<Invoice> list) {
         TablePrinter.printTable(
                 "kết quả tìm kiếm hóa đơn : ",
-                new String[]{"id khách hàng ", "khách hàng ", "ngày tạo ", "tổng tiền "},
+                new String[] { "mã hóa đơn ", "khách hàng ", "ngày tạo ", "tổng tiền " },
                 list,
-                i -> new String[]{
+                i -> new String[] {
                         String.valueOf(i.getId()),
                         i.getCustomer() != null ? i.getCustomer().getName() : "",
                         i.getCreatedAt() != null ? i.getCreatedAt().format(TablePrinter.DATETIME_FMT) : "",
                         TablePrinter.fmtMoney(i.getTotalAmount())
-                }
-        );
+                });
 
     }
 
@@ -229,16 +222,14 @@ public class InvoiceMenuHandler {
 
         TablePrinter.printTable(
                 "danh sách hóa đơn tổng hợp : ",
-                new String[]{"id hóa đơn ", "khách hàng ", "ngày tạo ", "tổng tiền "},
+                new String[] { "id hóa đơn ", "khách hàng ", "ngày tạo ", "tổng tiền " },
                 invoices,
-                i -> new String[]{
+                i -> new String[] {
                         String.valueOf(i.getId()),
                         i.getCustomer() != null ? i.getCustomer().getName() : "",
                         i.getCreatedAt() != null ? i.getCreatedAt().format(TablePrinter.DATETIME_FMT) : "",
                         TablePrinter.fmtMoney(i.getTotalAmount())
-                }
-        );
-
+                });
 
     }
 
@@ -247,22 +238,45 @@ public class InvoiceMenuHandler {
 
         Customer customer = chooseCustomer();
 
-        if (customer == null) return;
+        if (customer == null)
+            return;
 
         List<InvoiceDetail> details = new ArrayList<>();
         while (true) {
-            long pid = InputUtil.readLong(" nhập id sản phẩm  : ");
-            if (pid == 0) break;
-            ;
+            long pid = InputUtil.readLong(" Nhập ID sản phẩm (Nhấn 0 để hoàn tất hóa đơn): ");
+            if (pid == 0)
+                break;
 
             Product product = productService.getByIdProductService(pid);
-            int quantity = InputUtil.readIntInRange(" số lượng : ", 1, Integer.MAX_VALUE);
-            InvoiceDetail detail = new InvoiceDetail();
-            detail.setProduct(product);
-            detail.setQuantity(quantity);
+            System.out.println(" Chọn: " + product.getName() + " -- Tồn kho hiện tại: " + product.getStock());
 
-            details.add(detail);
+            int quantity = 0;
+            boolean quantityAdd = false;
 
+            while (true) {
+                quantity = InputUtil.readIntInRange("  Số lượng mua: ", 1, Integer.MAX_VALUE);
+
+                if (quantity > product.getStock()) {
+                    System.out
+                            .println(" Lỗi: Số lượng " + quantity + " vượt quá tồn kho (" + product.getStock() + ")!");
+                    System.out.println("  1. Nhập lại số lượng khác");
+                    System.out.println("  2. Đổi sang mã sản phẩm khác");
+                    int subChoice = InputUtil.readIntInRange("  Lựa chọn: ", 1, 2);
+                    if (subChoice == 2)
+                        break;
+                } else {
+                    quantityAdd = true;
+                    break;
+                }
+            }
+
+            if (quantityAdd) {
+                InvoiceDetail detail = new InvoiceDetail();
+                detail.setProduct(product);
+                detail.setQuantity(quantity);
+                details.add(detail);
+                System.out.println("  Đã thêm thành công.");
+            }
         }
 
         Invoice invoice = new Invoice();
@@ -283,35 +297,32 @@ public class InvoiceMenuHandler {
 
         TablePrinter.printTable(
                 "HÓA ĐƠN",
-                new String[]{"Mã hóa đơn", "Khách hàng", "Ngày tạo", "Tổng cộng"},
+                new String[] { "Mã hóa đơn", "Khách hàng", "Ngày tạo", "Tổng cộng" },
                 List.of(invoice),
-                i -> new String[]{
+                i -> new String[] {
                         String.valueOf(i.getId()),
                         i.getCustomer() != null ? i.getCustomer().getName() : "",
                         i.getCreatedAt() != null ? i.getCreatedAt().format(TablePrinter.DATETIME_FMT) : "",
                         TablePrinter.fmtMoney(i.getTotalAmount())
-                }
-        );
+                });
 
         List<InvoiceDetail> details = invoice.getDetails() == null ? List.of() : invoice.getDetails();
 
         TablePrinter.printTable(
                 "CHI TIẾT HÓA ĐƠN",
-                new String[]{"Mã sản phẩm", "Tên sản phẩm", "Số lượng", "Đơn giá", "Thành tiền"},
+                new String[] { "Mã sản phẩm", "Tên sản phẩm", "Số lượng", "Đơn giá", "Thành tiền" },
                 details,
-                d -> new String[]{
+                d -> new String[] {
                         d.getProduct() != null ? String.valueOf(d.getProduct().getId()) : "",
                         d.getProduct() != null ? safe(d.getProduct().getName()) : "",
                         String.valueOf(d.getQuantity()),
                         TablePrinter.fmtMoney(d.getUnitPrice()),
                         TablePrinter.fmtMoney(d.getLineTotal())
-                }
-        );
+                });
 
     }
 
     private Customer chooseCustomer() {
-
 
         System.out.println("\n--- CHỌN KHÁCH HÀNG ---");
         System.out.println("1. Nhập ID khách hàng");
@@ -319,7 +330,8 @@ public class InvoiceMenuHandler {
         System.out.println("0. Hủy");
 
         int c = InputUtil.readIntInRange("Chọn: ", 0, 2);
-        if (c == 0) return null;
+        if (c == 0)
+            return null;
 
         if (c == 1) {
             long id = InputUtil.readLong("Nhập ID khách hàng: ");
@@ -336,33 +348,18 @@ public class InvoiceMenuHandler {
 
         TablePrinter.printTable(
                 "DANH SÁCH KHÁCH HÀNG (LỌC)",
-                new String[]{"ID", "Tên", "Số điện thoại", "Email"},
+                new String[] { "ID", "Tên", "Số điện thoại", "Email" },
                 filtered,
-                x -> new String[]{
+                x -> new String[] {
                         String.valueOf(x.getId()),
                         x.getName(),
                         safe(x.getPhone()),
                         safe(x.getEmail())
-                }
-        );
+                });
 
         long id = InputUtil.readLong("Nhập ID khách hàng muốn chọn: ");
         return customerService.getByIdCustomerService(id);
 
-
     }
 
-
 }
-
-
-// revenue by day
-
-
-
-
-
-
-
-
-

@@ -1,7 +1,7 @@
 package phoneStore.exception;
 
 // fix and show bug for conole UI
-public final  class ConsoleErrorHandler {
+public final class ConsoleErrorHandler {
 
     private ConsoleErrorHandler() {
 
@@ -9,7 +9,10 @@ public final  class ConsoleErrorHandler {
 
     public static void handle(Exception e) {
 
-        if (e instanceof ValidationException) {
+        if (e instanceof BackToMenuException) {
+            System.out.println("-->  " + e.getMessage());
+
+        } else if (e instanceof ValidationException) {
             System.err.println(" dữ liệu không đúng : " + e.getMessage());
 
         } else if (e instanceof NotFoundException) {
@@ -33,6 +36,5 @@ public final  class ConsoleErrorHandler {
         }
 
     }
-
 
 }

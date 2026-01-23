@@ -1,10 +1,9 @@
-package phoneStore.app;
+package phoneStore.presentation;
 
 import phoneStore.constant.MenuConstant;
 import phoneStore.entity.Product;
 import phoneStore.exception.BusinessException;
 import phoneStore.exception.ConsoleErrorHandler;
-import phoneStore.exception.NotFoundException;
 import phoneStore.services.product.IProductService;
 import phoneStore.utils.InputUtil;
 import phoneStore.utils.TablePrinter;
@@ -14,12 +13,11 @@ import java.util.List;
 
 public class ProductMenuHandler {
 
-    private final IProductService productService ;
+    private final IProductService productService;
 
     public ProductMenuHandler(IProductService productService) {
         this.productService = productService;
     }
-
 
     public void run() {
         while (true) {
@@ -29,28 +27,28 @@ public class ProductMenuHandler {
 
                 switch (choice) {
                     case 1:
-                        createProduct();
+                        InputUtil.executeWithCancel(this::createProduct);
                         break;
                     case 2:
-                        updateProduct();
+                        InputUtil.executeWithCancel(this::updateProduct);
                         break;
                     case 3:
-                        deleteProduct();
+                        InputUtil.executeWithCancel(this::deleteProduct);
                         break;
                     case 4:
                         listAllProduct();
                         break;
                     case 5:
-                        findByIdProduct();
+                        InputUtil.executeWithCancel(this::findByIdProduct);
                         break;
                     case 6:
-                        searchByBrandProduct();
+                        InputUtil.executeWithCancel(this::searchByBrandProduct);
                         break;
                     case 7:
-                        searchByPriceRangeProduct();
+                        InputUtil.executeWithCancel(this::searchByPriceRangeProduct);
                         break;
                     case 8:
-                        searchByNameWithStockProduct();
+                        InputUtil.executeWithCancel(this::searchByNameWithStockProduct);
                         break;
                     case 0:
                         return;
@@ -69,9 +67,6 @@ public class ProductMenuHandler {
         List<Product> products = productService.searchByNameWithStockProductService(keyword);
         printProducts("kết quả tìm kiếm theo tên + tồn kho : ", products);
 
-
-
-
     }
 
     private void searchByPriceRangeProduct() {
@@ -80,17 +75,12 @@ public class ProductMenuHandler {
         List<Product> products = productService.searchByPriceRangeProductService(min, max);
         printProducts("kết quả tìm kiếm theo giá : ", products);
 
-
-
     }
 
     private void searchByBrandProduct() {
         String keyword = InputUtil.readString(" nhập nhãn hàng :  ");
         List<Product> products = productService.searchByBrandProductService(keyword);
-        printProducts("kết quả = ",products);
-
-
-
+        printProducts("kết quả = ", products);
 
     }
 
@@ -100,7 +90,6 @@ public class ProductMenuHandler {
         Product p = productService.getByIdProductService(id);
         printProducts("kết quả ", List.of(p));
 
-
     }
 
     private void listAllProduct() {
@@ -109,17 +98,16 @@ public class ProductMenuHandler {
         printProducts("danh sách sản phẩm", products);
     }
 
-    private void printProducts(String title  , List<Product> products) {
+    private void printProducts(String title, List<Product> products) {
 
-        TablePrinter.printTable(title , new String[]{"id" , "tên" ,"nhãn hiệu" , " giá " , " tồn kho"}, products,
-                product -> new String[]{
-                        String.valueOf(product.getId()) ,
+        TablePrinter.printTable(title, new String[] { "id", "tên", "nhãn hiệu", " giá ", " tồn kho" }, products,
+                product -> new String[] {
+                        String.valueOf(product.getId()),
                         product.getName(),
                         product.getBrand(),
                         TablePrinter.fmtMoney(product.getPrice()),
                         String.valueOf(product.getStock())
                 });
-
 
     }
 
@@ -145,7 +133,6 @@ public class ProductMenuHandler {
             productService.deleteProductService(id);
             System.out.println("Đã xóa điện thoại thành công! ID: " + id);
 
-
         } catch (BusinessException e) {
             System.out.println("Lỗi nghiệp vụ delele product " + e.getMessage());
 
@@ -153,7 +140,6 @@ public class ProductMenuHandler {
     }
 
     private void updateProduct() {
-
 
         long id = InputUtil.readLong("nhập id sản phẩm cần cập nhật  ");
         Product exist = productService.getByIdProductService(id);
@@ -164,31 +150,25 @@ public class ProductMenuHandler {
         BigDecimal price = InputUtil.readBigDecimalPositive("Gía mới :  ");
         int stock = InputUtil.readIntNonNegative("Tồn Kho :   ");
 
-        Product p = new Product(id, name, brand, price, stock) ;
+        Product p = new Product(id, name, brand, price, stock);
         productService.updateProductService(p);
-
 
         System.out.println("cập nhật thành công ! sản phẩm mới :  " + p);
 
-
     }
-
 
     /**
      *
      */
     private void createProduct() {
 
-        String name = InputUtil.readNotNull("tên sản phẩm : ") ;
-        String brand = InputUtil.readNotNull("nhãn hiệu : ") ;
-        BigDecimal price = InputUtil.readBigDecimalPositive("Giá : ") ;
-        int stock =  InputUtil.readIntNonNegative("tồn kho " ) ;
+        String name = InputUtil.readNotNull("tên sản phẩm : ");
+        String brand = InputUtil.readNotNull("nhãn hiệu : ");
+        BigDecimal price = InputUtil.readBigDecimalPositive("Giá : ");
+        int stock = InputUtil.readIntNonNegative("tồn kho ");
         Product p = new Product(null, name, brand, price, stock);
-        Product created = productService.createProductService(p) ;
+        Product created = productService.createProductService(p);
         System.out.println(" đã thêm sản phẩm thành công ! id = " + created.getId());
-
-
-
 
     }
 }

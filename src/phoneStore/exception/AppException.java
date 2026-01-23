@@ -1,6 +1,6 @@
 package phoneStore.exception;
 
-public class AppException extends RuntimeException{
+public abstract class AppException extends RuntimeException{
 
 
     public AppException(String message) {

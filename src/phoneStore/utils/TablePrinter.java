@@ -34,43 +34,39 @@ public class TablePrinter {
             widths[i] = headers[i].length();
         }
 
-
-        for (T r : rows) {
+        // Calculate max width for each column using streams
+        rows.forEach(r -> {
             String[] cols = rowMapper.apply(r);
             for (int i = 0; i < colCount; i++) {
                 String cell = safe(cols[i]);
                 widths[i] = Math.max(widths[i], cell.length());
             }
-        }
+        });
 
         printLine(widths);
         printRow(headers, widths);
         printLine(widths);
 
-        for (T r : rows) {
-            printRow(rowMapper.apply(r), widths);
-        }
+        // Print each row using streams
+        rows.stream()
+                .map(rowMapper)
+                .forEach(row -> printRow(row, widths));
 
         printLine(widths);
     }
 
     private static void printRow(String[] cols, int[] widths) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < cols.length; i++) {
-            if (i > 0) sb.append(SEP);
-            String cell = safe(cols[i]);
-            sb.append(padRight(cell, widths[i]));
-        }
-        System.out.println(sb.toString());
+        String result = java.util.stream.IntStream.range(0, cols.length)
+                .mapToObj(i -> (i > 0 ? SEP : "") + padRight(safe(cols[i]), widths[i]))
+                .reduce("", (acc, curr) -> acc + curr);
+        System.out.println(result);
     }
 
     private static void printLine(int[] widths) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < widths.length; i++) {
-            if (i > 0) sb.append("-+-");
-            sb.append(repeat("-", widths[i]));
-        }
-        System.out.println(sb.toString());
+        String result = java.util.stream.IntStream.range(0, widths.length)
+                .mapToObj(i -> (i > 0 ? "-+-" : "") + repeat("-", widths[i]))
+                .reduce("", (acc, curr) -> acc + curr);
+        System.out.println(result);
     }
 
     public static String safe(String s) {

@@ -29,21 +29,21 @@ public final class Validator {
         }
     }
 
-    public static void validateEmailOptional(String email) {
+    public static void validateEmail(String email) {
         if (email == null || email.trim().isEmpty()) return;
         if (!RegexConstant.EMAIL_PATTERN.matcher(email.trim()).matches()) {
             throw new ValidationException(MessageConstant.ERR_INVALID_EMAIL);
         }
     }
 
-    public static void validatePhoneOptional(String phone) {
+    public static void validatePhone(String phone) {
         if (phone == null || phone.trim().isEmpty()) return;
         if (!RegexConstant.PHONE_VN_PATTERN.matcher(phone.trim()).matches()) {
             throw new ValidationException(MessageConstant.ERR_INVALID_PHONE);
         }
     }
 
-    // ===== Validate entity fields (không phụ thuộc domain) =====
+    // Validate entity fields (không phụ thuộc entity  )
     public static void validateProductFields(String name, String brand, BigDecimal price, Integer stock) {
         requireNonBlank(name, "Ten san pham");
         requireNonBlank(brand, "Hang san xuat");
@@ -53,9 +53,9 @@ public final class Validator {
 
     public static void validateCustomerFields(String name, String phone, String email, String address) {
         requireNonBlank(name, "Ten khach hang");
-        validatePhoneOptional(phone);
-        validateEmailOptional(email);
-        // address optional: nếu muốn bắt buộc thì requireNonBlank(address,...)
+        validatePhone(phone);
+        validateEmail(email);
+        // address optional: nếu muốn bắt buộc thì requireNonBlank
     }
 
     public static void validateInvoiceLine(Integer quantity, BigDecimal unitPrice) {

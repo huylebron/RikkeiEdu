@@ -1,4 +1,4 @@
-package phoneStore.app;
+package phoneStore.presentation;
 
 import phoneStore.constant.MenuConstant;
 import phoneStore.entity.Customer;
@@ -27,13 +27,13 @@ public class CustomerMenuHandler {
 
                 switch (choice) {
                     case 1:
-                        createCustomer();
+                        InputUtil.executeWithCancel(this::createCustomer);
                         break;
                     case 2:
-                        updateCustomer();
+                        InputUtil.executeWithCancel(this::updateCustomer);
                         break;
                     case 3:
-                        deleteCustomer();
+                        InputUtil.executeWithCancel(this::deleteCustomer);
                         break;
                     case 4:
                         listAllCustomer();
@@ -48,10 +48,7 @@ public class CustomerMenuHandler {
             }
         }
 
-
-
-
-}
+    }
 
     private void listAllCustomer() {
 
@@ -59,37 +56,45 @@ public class CustomerMenuHandler {
 
         TablePrinter.printTable(
                 "danh sách khách hàng ",
-                new String[]{"ID", "tên : ", "sdt: ", "Email", "địa chỉ: "},
+                new String[] { "ID", "tên : ", "sdt: ", "Email", "địa chỉ: " },
                 customers,
-                c -> new String[]{
+                c -> new String[] {
                         String.valueOf(c.getId()),
                         c.getName(),
                         safe(c.getPhone()),
                         safe(c.getEmail()),
                         safe(c.getAddress())
-                }
-        );
+                });
     }
 
     private void deleteCustomer() {
-
         long id = InputUtil.readLong("Nhap ID khach hang can xoa: ");
-        customerService.deleteCustomerService(id);
-        System.out.println("Xoa thanh cong.");
+        try {
+            Customer exist = customerService.getByIdCustomerService(id);
+            System.out.println("Sẽ xóa khách hàng: " + exist);
+            if (InputUtil.readConfirm("Bạn có chắc chắn muốn xóa không?")) {
+                customerService.deleteCustomerService(id);
+                System.out.println("Xóa thành công. ID: " + id);
+            } else {
+                System.out.println("Đã hủy thao tác xóa.");
+            }
+        } catch (Exception e) {
+            System.out.println("Lỗi: " + e.getMessage());
+        }
     }
 
     private void updateCustomer() {
-
 
         long id = InputUtil.readLong(" nhập id khách hàng cần cập nhật  ");
         Customer exist = customerService.getByIdCustomerService(id);
         System.out.println("Khach hang hien tai: " + exist);
 
         // Không cho sửa ID
-        String name = InputUtil.readNotNull("Ten moi: ");
-        String phone = InputUtil.readString("So dien thoai moi");
-        String email = InputUtil.readString("Email moi");
-        String address = InputUtil.readString("Dia chi moi");
+        // Sử dụng giá trị mặc định nếu người dùng để trống
+        String name = InputUtil.readStringDefault("Tên mới", exist.getName());
+        String phone = InputUtil.readPhoneDefault("Số điện thoại mới", exist.getPhone());
+        String email = InputUtil.readEmailDefault("Email mới", exist.getEmail());
+        String address = InputUtil.readStringDefault("Địa chỉ mới", exist.getAddress());
 
         Customer c = new Customer(id, name, phone, email, address);
         customerService.updateCustomerService(c);
@@ -100,16 +105,14 @@ public class CustomerMenuHandler {
     private void createCustomer() {
 
         String name = InputUtil.readNotNull("tên khách hàng :  ");
-        String phone = InputUtil.readString("số điện thoại : " );
-        String email = InputUtil.readString("Email : ");
+        String phone = InputUtil.readPhone("số điện thoại : ");
+        String email = InputUtil.readEmail("Email : ");
         String address = InputUtil.readString("Dia chi : ");
 
         Customer c = new Customer(null, name, phone, email, address);
         Customer created = customerService.createCustomerService(c);
 
-        System.out.println("đã thêm khách hàng thành công . ID=" + created.getId());
+        System.out.println("đã thêm khách hàng thành công . ID=" + created.getId() + "\n"
+                + c.toString());
     }
-    }
-
-
-
+}

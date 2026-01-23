@@ -253,12 +253,12 @@ public class InvoiceDaoImpl  implements IInvoiceDao{
      */
     @Override
     public BigDecimal getRevenueByDay(LocalDate day) {
-        String sql = "select * from fn_revenue_by_day(?)";
+        String sql = "{ ? = call fn_revenue_by_day(?) }";
         try (Connection conn = DBConnection.getConnection();
              CallableStatement cs = conn.prepareCall(sql)) {
 
             cs.registerOutParameter(1, Types.NUMERIC);
-            cs.setDate(2, Date.valueOf(day));
+            cs.setDate(2, java.sql.Date.valueOf(day));
 
             cs.execute();
 
@@ -267,8 +267,6 @@ public class InvoiceDaoImpl  implements IInvoiceDao{
         } catch (SQLException e) {
             throw new DatabaseException("Lỗi khi gọi fn_revenue_by_day", e);
         }
-
-
     }
 
     /**
@@ -278,7 +276,7 @@ public class InvoiceDaoImpl  implements IInvoiceDao{
      */
     @Override
     public BigDecimal getRevenueByMonth(int year, int month) {
-        String sql = "? = call fn_revenue_by_month(?, ?)";
+        String sql = "{ ? = call fn_revenue_by_month(?, ?) }";
         try (Connection conn = DBConnection.getConnection();
              CallableStatement cs = conn.prepareCall(sql)) {
 
@@ -303,7 +301,7 @@ public class InvoiceDaoImpl  implements IInvoiceDao{
      */
     @Override
     public BigDecimal getRevenueByYear(int year) {
-        String sql = "? = call fn_revenue_by_year(?)";
+        String sql = "{ ? = call fn_revenue_by_year(?) }";
         try (Connection conn = DBConnection.getConnection();
              CallableStatement cs = conn.prepareCall(sql)) {
 
